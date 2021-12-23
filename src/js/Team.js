@@ -1,3 +1,5 @@
-export default class Team {
+import Character from './Character';
 
+export default class Team {
+    
 }

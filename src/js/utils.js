@@ -1,16 +1,28 @@
-export function calcTileType(index, boardSize) {
-  // TODO: write logic here
-  return 'center';
-}
+// export function calcTileType(index, boardSize) {
+//   if (index = 0) {
+//     return 'top left'
+//   }
 
-export function calcHealthLevel(health) {
-  if (health < 15) {
-    return 'critical';
-  }
+//   if (index > 0 && index<(boardSize - 1)) {
+//     return 'top'
+//   }
 
-  if (health < 50) {
-    return 'normal';
-  }
+//   if () {
+    
+//   }
 
-  return 'high';
-}
+//   // TODO: write logic here
+//   return 'center';
+// }
+
+// export function calcHealthLevel(health) {
+//   if (health < 15) {
+//     return 'critical';
+//   }
+
+//   if (health < 50) {
+//     return 'normal';
+//   }
+
+//   return 'high';
+// }
