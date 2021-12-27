@@ -1,4 +1,7 @@
 const path = require('path');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { webpack } = require('webpack');
 
 module.exports = {
   output: {
@@ -7,37 +10,48 @@ module.exports = {
   module: {
     rules: [
       {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-      }
-    },
-    {
-      test: /\.html$/i,
-      use: [
-        'html-loader'
-      ]
-    },
-    {
-      test: /\.css$/i,
-      use: [
-        'css-loader'
-      ]
-    },
-    {
-      test: /\.svg$/i,
-      use: [
-        'svgo-loader',
-        'url-loader'
-      ]
-    },
-    {
-      test: /\.png$/i,
-      use: [
-        'url-loader'
-      ]
-    },
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader, 'css-loader',
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: false,
+            },
+          },
+        ],
+      },
     ],
-  }
-}
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './src/index.html',
+      filename: './index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
+};
