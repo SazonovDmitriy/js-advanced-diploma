@@ -13,5 +13,11 @@ export function* characterGenerator(allowedTypes, maxLevel) {
 }
 
 export function generateTeam(allowedTypes, maxLevel, characterCount) {
-  
+  const team = [];
+
+  for (let i = 0; i < characterCount; i++) {
+    const character = characterGenerator(allowedTypes, maxLevel)
+    team.push(character.next().value);
+  };
+  return team;
 }

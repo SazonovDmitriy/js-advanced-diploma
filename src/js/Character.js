@@ -5,6 +5,10 @@ export default class Character {
     this.defence = 0;
     this.health = 50;
     this.type = type;
+
+    if (new.target.name === 'Character') {
+      throw new Error('error create new Character');
+    }
     // TODO: throw error if user use "new Character()"
   }
 }

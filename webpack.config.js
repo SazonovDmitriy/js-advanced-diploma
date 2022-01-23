@@ -1,9 +1,15 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
 
 module.exports = {
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'src'),
+    },
+    compress: true,
+    port: 8000,
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
   },
@@ -32,11 +38,12 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif)$/i,
+        dependency: { not: ['url'] },
         use: [
           {
             loader: 'url-loader',
             options: {
-              limit: false,
+              limit: 8192,
             },
           },
         ],
@@ -52,6 +59,5 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
-    new webpack.HotModuleReplacementPlugin(),
   ],
 };
