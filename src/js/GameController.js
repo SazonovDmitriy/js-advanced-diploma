@@ -3,6 +3,7 @@ import GamePlay from "./GamePlay";
 import PositionedCharacter from "./PositionedCharacter";
 import GameState from "./GameState";
 import Team from "./Team";
+import {characterGenerator, generateTeam} from './generators';
 
 export default class GameController {
   constructor(gamePlay, stateService) {
@@ -15,18 +16,42 @@ export default class GameController {
     this.selectedCharacter = {};
     this.userTeam = [];
     this.enemyTeam = [];
-  }
+  };
 
   init() {
     this.gamePlay.drawUi(this.themes);
+    // this.gamePlay.redrawPositions([...this.userPositions, ...this.enemyPositions]);
     this.gamePlay.addNewGameListener(this.newGame.bind(this));
     this.gamePlay.addSaveGameListener(this.saveGame.bind(this));
     this.gamePlay.addLoadGameListener(this.loadGame.bind(this));
     this.gamePlay.addCellEnterListener(this.onCellEnter.bind(this));
     this.gamePlay.addCellClickListener(this.onCellClick.bind(this));
     this.gamePlay.addCellLeaveListener(this.onCellLeave.bind(this));
-  }
+  };
+
+  onCellClick(index) {
+    this.index = index;
+  };
   
+ 
+  onCellEnter(index) {
+    this.index = index;
+    const icons = {
+      level: '\u{1F396}',
+      attack: '\u{2694}',
+      defence: '\u{1F6E1}',
+      health: '\u{2764}',
+    };
+
+    if (!this.blockedBoard) {
+      for (const item of [...this.userPositions, ...this.enemyPositions]) {
+        if (item.position === index) {
+          let message = `${icons.level}${item.character.level} ${icons.attack}${item.character.attack} ${icons.defence}${item.character.defence} ${icons.health}${item.character.health}`;
+          this.gamePlay.showCellTooltip(message, index);
+        }
+      }
+    };
+  };
   addPositionedCharacter(userTeam, enemyTeam) {
     this.userPositions = [];
     this.enemyPositions = [];
@@ -40,28 +65,16 @@ export default class GameController {
     });
   };
 
-  onCellClick(index) {
-    this.index = index;
-    
-  }
- 
-  onCellEnter(index) {
-    this.index = index;
-    const icons = {
-      level: '\u{1F396}',
-      attack: '\u{2694}',
-      defence: '\u{1F6E1}',
-      health: '\u{2764}'
-    };
+  newGame() {
+  
+  };
 
-    if (!this.blockedBoard) {
-      for (const item of [...this.userPositions, ...this.enemyPositions]) {
-        if (item.position === index) {
-          let message = `${icons.level}${item.character.level} ${icons.attack}${item.character.attack} ${icons.defence}${item.character.defence} ${icons.health}${item.character.health}`;
-          this.gamePlay.showCellTooltip(message, index);
-        }
-      }
-    };
+  saveGame() {
+
+  };
+
+  loadGame() {
+
   };
 
   onCellLeave(index) {
@@ -69,6 +82,11 @@ export default class GameController {
       this.gamePlay.deselectCell(index);
     };
     this.gamePlay.hideCellTooltip(index);
+  };
+
+  getRandomPositions(positions) {
+    let num = Math.floor(Math.random() * positions.length);
+    let random = positions.splice(num, 1);
+    return random[0];
   }
 };
-  
