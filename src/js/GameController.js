@@ -227,11 +227,11 @@ export default class GameController {
     } else if (this.level === 3) { // Если уровень 3
       this.themes = themes.arctic;
       this.userTeam.push(generateTeam(Team.getUserTeam(), 2, 1)[0]);
-      this.enemyTeam = generateTeam(Team.getUserTeam(), 3, this.userTeam.length);
+      this.enemyTeam = generateTeam(Team.getEnemyTeam(), 3, this.userTeam.length);
     } else if (this.level === 4) { // Если уровень 4
       this.themes = themes.mountain;
-      this.userTeam.push(generateTeam(Team.getUserTeam(), 3, 1));
-      this.enemyTeam = generateTeam(Team.getUserTeam(), 4, this.userTeam.length);
+      this.userTeam.push(generateTeam(Team.getUserTeam(), 3, 1)[0]);
+      this.enemyTeam = generateTeam(Team.getEnemyTeam(), 4, this.userTeam.length);
     } else { // Иначе
       this.blockedBoard = true;
       GamePlay.showMessage(`You have ${this.points} points`);
@@ -266,7 +266,7 @@ export default class GameController {
   startEnemyPositions() {
     let positions = [];
     for (let i = 0; i < this.boardSize ** 2; i += 1) {
-      if (i % this.boardSize === 0 || i % this.boardSize === 1) {
+      if (i % this.boardSize === this.boardSize - 1 || i % this.boardSize === this.boardSize - 2) {
         positions.push(i);
       }
     }
@@ -300,19 +300,26 @@ export default class GameController {
     for (let i = 0; i <= distance; i += 1) {
       if ((itemColumn + i) < 8) {
         allowedPositionsArray.push((itemRow * 8) + (itemColumn + i));
-      } if ((itemRow + i) < 8) {
+      } 
+      if ((itemRow + i) < 8) {
         allowedPositionsArray.push(((itemRow + i) * 8) + itemColumn);
-      } if ((itemColumn - i) >= 0) {
+      } 
+      if ((itemColumn - i) >= 0) {
         allowedPositionsArray.push((itemRow * 8) + (itemColumn - i));
-      } if ((itemRow - i) >= 0) {
+      } 
+      if ((itemRow - i) >= 0) {
         allowedPositionsArray.push(((itemRow - i) * 8) + itemColumn);
-      } if ((itemRow + i) < 8 && (itemColumn + i) < 8) {
+      } 
+      if ((itemRow + i) < 8 && (itemColumn + i) < 8) {
         allowedPositionsArray.push(((itemRow + i) * 8) + (itemColumn + i));
-      } if ((itemRow + i) < 8 && (itemColumn - i) >= 0) {
+      } 
+      if ((itemRow + i) < 8 && (itemColumn - i) >= 0) {
         allowedPositionsArray.push(((itemRow + i) * 8) + (itemColumn - i));
-      } if ((itemRow - i) >= 0 && (itemColumn - i) >= 0) {
+      } 
+      if ((itemRow - i) >= 0 && (itemColumn - i) >= 0) {
         allowedPositionsArray.push(((itemRow - i) * 8) + (itemColumn - i));
-      } if ((itemRow - i) >= 0 && (itemColumn + i) < 8) {
+      } 
+      if ((itemRow - i) >= 0 && (itemColumn + i) < 8) {
         allowedPositionsArray.push(((itemRow - i) * 8) + (itemColumn + i));
       };
     };
@@ -330,12 +337,6 @@ export default class GameController {
     };
     this.gamePlay.hideCellTooltip(index);
     this.gamePlay.setCursor(cursors.auto);
-  };
-
-  getRandomPositions(positions) {
-    let num = Math.floor(Math.random() * positions.length);
-    let random = positions.splice(num, 1);
-    return random[0];
   };
 
   getFilledPositions() {

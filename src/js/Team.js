@@ -8,7 +8,7 @@ import Vampire from "./characters/Vampire";
 export default class Team {
 
   static getStartUserTeam() {
-    return [new Swordsman(1), new Daemon(1)];
+    return [new Bowman(1), new Swordsman(1)];
   }
 
   static getEnemyTeam() {
